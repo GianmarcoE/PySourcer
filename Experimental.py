@@ -92,10 +92,6 @@ try:
                 root = Tk()
                 root.withdraw()
                 data = root.clipboard_get()
-                #time.sleep(1)
-
-                #file = open("C:\\Users\\ercolani\\OneDrive - TomTom\\Desktop\\Xample.txt", "r", encoding="utf8") #get file
-                #data = file.read() #read content of file to string
 
                 spl_word_header = 'class="topcard-requisitions topcard-condensed'
                 header = data.partition(spl_word_header)[0]
@@ -357,7 +353,7 @@ try:
                     if too_senior == True:
                         likelyhood = "Too Senior"
 
-                employee = data.count("TomTom")
+                employee = data.count("XXXCompany")
 
                 if employee != 0:
                     likelyhood += " CAREFUL - CURRENT/FORMER EMPLOYEE"
