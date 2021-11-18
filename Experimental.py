@@ -303,28 +303,28 @@ try:
                 elif phpdev > 2 and wrong == True:
                     likelyhood = "No fit: PHP Developer"
                 elif netofoccurrences == 2 and wrong == False:
-                    if current_duration < 7:
+                    if var[0] < 7:
                         likelyhood = "No Fit: Changed job recently"
                     elif average_time < 16 and var[0] < 20:
                         likelyhood = 'No Fit: Changes too often'
                     else:
                         likelyhood = "50% good fit"
                 elif netofoccurrences >= 3 and netofoccurrences < 7 and wrong == False:
-                    if current_duration < 7:
+                    if var[0] < 7:
                         likelyhood = "No Fit: Changed job recently"
                     elif average_time < 16 and var[0] < 20:
                         likelyhood = 'No Fit: Changes too often'
                     else:
                         likelyhood = "65% good fit"
                 elif netofoccurrences > 6 and wrong == False:
-                    if current_duration < 7:
+                    if var[0] < 7:
                         likelyhood = "No Fit: Changed job recently"
                     elif average_time < 16 and var[0] < 20:
                         likelyhood = 'No Fit: Changes too often'
                     else:
                         likelyhood = "80% good fit"
                 elif netofoccurrences < 2 and wrong == False:
-                    if current_duration < 7:
+                    if var[0] < 7:
                         likelyhood = "No Fit: Changed job recently"
                     elif average_time < 16 and var[0] < 20:
                         likelyhood = 'No Fit: Changes too often'
