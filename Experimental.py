@@ -220,8 +220,10 @@ try:
                 other_dur_end = '</span>'
                 duration_start = 'data-test-grouped-position-entity-date-overall-range="">'
                 duration_end = '</div>'
+                
+                positions_listed = data.count(other_dur_start) + data.count(duration_start)
 
-                for i in range(4):
+                for i in range(positions_listed):
                     if i == 0:
                         first = data.find(other_dur_start)
                         second = data.find(duration_start)
