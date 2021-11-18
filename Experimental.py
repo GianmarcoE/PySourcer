@@ -194,6 +194,10 @@ try:
                 current_jobtitle_end2 = '</a>'
                 first = data.find(current_jobtitle_start)
                 second = data.find(current_jobtitle_start2)
+                if first == -1:
+                    first += second + 2
+                elif second == -1:
+                    second += first + 2
                 if first < second: #checks index of the two strings to see which one comes first and uses it as current job title
                     pass
                 else:
