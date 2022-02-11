@@ -464,10 +464,18 @@ try:
                             if netofoccurrences < 3 and int(javascript_endorse) > 1.5*(int(java_endorse)):
                                 likelyhood = "No fit: More focused on FE rather than BE"
 
-                if likelyhood == "":
+                if likelyhood == "" and itsgroup == False:
                     if "Architect" in current_jobtitle and var[0] > 16 and "Engineer" not in current_jobtitle and "Developer" not in current_jobtitle:
                         likelyhood = "No fit: Senior Architect"
                     elif "Architect" in current_jobtitle and var[0] < 16 and var[0] > 6 and "Engineer" not in current_jobtitle and "Developer" not in current_jobtitle:
+                        if "Architect" in prev_jobtitle and "Engineer" not in prev_jobtitle and "Developer" not in prev_jobtitle:
+                            likelyhood = "No fit: Senior Architect 2"
+                        else:
+                            pass
+                elif likelyhood == "" and itsgroup == True:
+                    if "Architect" in current_jobtitle and group_first_duration > 16 and "Engineer" not in current_jobtitle and "Developer" not in current_jobtitle:
+                        likelyhood = "No fit: Senior Architect"
+                    elif "Architect" in current_jobtitle and group_first_duration < 16 and group_first_duration > 6 and "Engineer" not in current_jobtitle and "Developer" not in current_jobtitle:
                         if "Architect" in prev_jobtitle and "Engineer" not in prev_jobtitle and "Developer" not in prev_jobtitle:
                             likelyhood = "No fit: Senior Architect 2"
                         else:
@@ -477,7 +485,7 @@ try:
                     if var[0] < 7:
                             likelyhood = "No fit: Changed job recently"
                     elif average_time < 18 and var[0] < 24:
-                            likelyhood = 'No fit: Changes too often'
+                            likelyhood = "No fit: Changes too often"
                     if var[0] > 6 and var[0] < 30 and itsgroup == False:
                         for i in range(lenprodman):
                             if prodman[i] in prev_jobtitle:
@@ -527,8 +535,7 @@ try:
                             if otherwrong[i] in prev_jobtitle:
                                 likelyhood = "No fit: Other Irrelevant till recently"
                     elif itsgroup == True:
-                        var[0] = group_first_duration
-                        if var[0] > 6 and var[0] < 30:
+                        if group_first_duration > 6 and group_first_duration < 30:
                             for i in range(lenprodman):
                                 if prodman[i] in prev_jobtitle:
                                     likelyhood = "No fit: Product till recently"
@@ -669,5 +676,3 @@ except:
     current_time = time.strftime("%H:%M", t)
     ring_end()
     print(f"\nProgram interrupted at {current_time}")
-
-
