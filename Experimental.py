@@ -3,9 +3,10 @@ import time
 import sys
 import os
 from tkinter import Tk
-import winsound
+#import winsound
 import webbrowser
 import re
+from playsound import playsound  
 
 try:
 
@@ -16,7 +17,7 @@ try:
         pyautogui.click(670, 621)
         pyautogui.click(670, 651)
         pyautogui.click(670, 591)
-        time.sleep(3)
+        time.sleep(4) #3 e la base
 
     def copy_link():
         pyautogui.click(1259, 857) #go on the body of the LI profile
@@ -42,16 +43,22 @@ try:
     ##        pyautogui.hotkey('ctrl', 'shift', 'tab')
     ##        time.sleep(1)
 
-    def ring_end(freq, duration):
-        winsound.Beep(freq, duration)
-        time.sleep(0.5)
-        winsound.Beep(freq, duration)
-        time.sleep(0.5)
-        winsound.Beep(freq, 2*duration)
+    def ring_end(): #freq, duration in bracket for bip
+##        text_val = 'An error occurred and the program has been interrupted'    
+##        language = 'en'  
+##        obj = gTTS(text=text_val, lang=language, slow=False)    
+##        obj.save("interrupt.mp3")
+        playsound("sound-of-a-game-failed-trumpet.mp3")
+        playsound("interrupt.mp3")
+##        winsound.Beep(freq, duration)
+##        time.sleep(0.5)
+##        winsound.Beep(freq, duration)
+##        time.sleep(0.5)
+##        winsound.Beep(freq, 2*duration)
         
     def main():
         total_saved = 0
-        for r in range(3):
+        for r in range(4):
             
             time.sleep(1)
             pyautogui.click(690, 623) #click first profile list
@@ -67,7 +74,7 @@ try:
                     pyautogui.click(1798, 202) #next profile
                     time.sleep(5) #4 e la base
                     
-                pyautogui.rightClick(1220, 515) #right click on profile
+                pyautogui.rightClick(1200, 515) #right click on profile #1220 before
                 time.sleep(0.5)
                 pyautogui.press('up') #go on zbadaj for google inspect
                 time.sleep(0.5)
@@ -154,7 +161,8 @@ try:
                           "Testing Engineer", "in Test", "In Test", "in test",
                           "Test Developer", "Automation Quality", "tester",
                           "Tester", "Automation Engineer", "Test Development",
-                          "Test Analyst", "Test Lead", "Tests", "Test Consultant"]
+                          "Test Analyst", "Test Lead", "Tests", "Test Consultant",
+                          "Test automation", "Test Framework"]
                 lentester = len(tester)
 
                 netdev = [".NET", ".Net", "C#"]
@@ -166,7 +174,8 @@ try:
                            "Infrastructure Engineer", "Systems Administrator",
                            "Integration", "Administrator aplikacji",
                            "Inżynier Systemowy", "inżynier systemowy",
-                           "Systems engineer"]
+                           "Systems engineer", "Administrator systemu",
+                           "Systems administrator", "Administrator IT"]
                 lennetwork = len(network)
 
                 devops = ["DevOps", "devops", "Devops", "Site Reliability Engineer",
@@ -212,42 +221,75 @@ try:
                 elif second == -1:
                     second += first + 2
                 if first < second: #checks index of the two strings to see which one comes first and uses it as current job title
-                    pass
+                    current_jobtitle = data.partition(current_jobtitle_start)[2]
+                    current_jobtitle = current_jobtitle.partition(current_jobtitle_end)[0]
+                    current_jobtitle = current_jobtitle.strip()
+                    itsgroup = False
                 else:
-                    current_jobtitle_start = current_jobtitle_start2
+                    current_jobtitle_start = current_jobtitle_start2    
                     current_jobtitle_end = current_jobtitle_end2
-                current_jobtitle = data.partition(current_jobtitle_start)[2]
-                current_jobtitle = current_jobtitle.partition(current_jobtitle_end)[0]
-                current_jobtitle = current_jobtitle.strip()
+                    current_jobtitle = data.partition(current_jobtitle_start)[2]
 
-                for jbt in range(2):
-                    prev_jobtitle_start = 'class="position-item__position-title-link ember-view">'
+                    ### Inizio test nuovo
+                    prev_jobtitle_start = 'class="ember-view" data-test-grouped-position-title-link="">'
                     prev_jobtitle_end = '</a>'
-                    prev_jobtitle_start2 = 'class="ember-view" data-test-grouped-position-title-link="">'
-                    prev_jobtitle_end2 = '</a>'
-                    if jbt == 0:
-                        first = data.find(prev_jobtitle_start)
-                        second = data.find(prev_jobtitle_start2)
-                    elif jbt == 1:
-                        if prev_jobtitle_start in prev_jobtitle or prev_jobtitle_start2 in prev_jobtitle:
-                            first = prev_jobtitle.find(prev_jobtitle_start)
-                            second = prev_jobtitle.find(prev_jobtitle_start2)
-                            if first == -1:
-                                first += second + 2
-                            elif second == -1:
-                                second += first + 2
-                            if first < second: #checks index of the two strings to see which one comes first and uses it as current job title
-                                pass
-                            else:
-                                prev_jobtitle_start = prev_jobtitle_start2
-                                prev_jobtitle_end = prev_jobtitle_end2
-                    if jbt == 0:
-                        prev_jobtitle = data.partition(prev_jobtitle_start)[2]
-                    elif jbt == 1:
-                        prev_jobtitle = prev_jobtitle.partition(prev_jobtitle_start)[2] #strips twice to get the job title prior to current
-                        
-                prev_jobtitle = prev_jobtitle.partition(prev_jobtitle_end)[0]
-                prev_jobtitle = prev_jobtitle.strip()
+                    prev_jobtitle = current_jobtitle.partition(prev_jobtitle_start)[2]
+                    prev_jobtitle = prev_jobtitle.partition(prev_jobtitle_end)[0]
+                    prev_jobtitle = prev_jobtitle.strip()
+                    duration_group_start = 'data-test-grouped-position-entity-duration="">'
+                    duration_group_end = '</span>'
+                    durationtest1 = current_jobtitle.partition(duration_group_start)[2]
+                    durationtest = durationtest1.partition(duration_group_end)[0]
+                    if re.findall(".+ yrs .+ mos", durationtest):
+                        group_first_duration = int(durationtest[:2]) * 12 + int(durationtest[i][6:-4])
+                    elif re.findall(".+ yrs .+ mo", durationtest):
+                        group_first_duration = int(durationtest[:2]) * 12 + int(durationtest[6:-3])
+                    elif re.findall(".+ yr .+ mos", durationtest):
+                        group_first_duration = int(durationtest[:2]) * 12 + int(durationtest[5:-4])
+                    elif re.findall(".+ yr .+ mo", durationtest):
+                        group_first_duration = int(durationtest[:2]) * 12 + int(durationtest[5:-3])
+                    elif re.findall(".+ yrs", durationtest):
+                        group_first_duration = int(durationtest[:-4]) * 12
+                    elif re.findall(".+ yr", durationtest):
+                        group_first_duration = int(durationtest[:2]) * 12
+                    elif re.findall(".+ mos", durationtest):
+                        group_first_duration = int(durationtest[:-4])
+                    elif re.findall(".+ mo", durationtest):
+                        group_first_duration = int(durationtest[:-3])
+
+                    itsgroup = True
+                    current_jobtitle = current_jobtitle.partition(current_jobtitle_end)[0]
+                    current_jobtitle = current_jobtitle.strip()
+
+                if itsgroup == False:
+                    for jbt in range(2):
+                        prev_jobtitle_start = 'class="position-item__position-title-link ember-view">'
+                        prev_jobtitle_end = '</a>'
+                        prev_jobtitle_start2 = 'class="ember-view" data-test-grouped-position-title-link="">'
+                        prev_jobtitle_end2 = '</a>'
+                        if jbt == 0:
+                            first = data.find(prev_jobtitle_start)
+                            second = data.find(prev_jobtitle_start2)
+                        elif jbt == 1:
+                            if prev_jobtitle_start in prev_jobtitle or prev_jobtitle_start2 in prev_jobtitle:
+                                first = prev_jobtitle.find(prev_jobtitle_start)
+                                second = prev_jobtitle.find(prev_jobtitle_start2)
+                                if first == -1:
+                                    first += second + 2
+                                elif second == -1:
+                                    second += first + 2
+                                if first < second: #checks index of the two strings to see which one comes first and uses it as current job title
+                                    pass
+                                else:
+                                    prev_jobtitle_start = prev_jobtitle_start2
+                                    prev_jobtitle_end = prev_jobtitle_end2
+                        if jbt == 0:
+                            prev_jobtitle = data.partition(prev_jobtitle_start)[2]
+                        elif jbt == 1:
+                            prev_jobtitle = prev_jobtitle.partition(prev_jobtitle_start)[2] #strips twice to get the job title prior to current
+                            
+                    prev_jobtitle = prev_jobtitle.partition(prev_jobtitle_end)[0]
+                    prev_jobtitle = prev_jobtitle.strip()
 
                 var = []
 
@@ -373,6 +415,10 @@ try:
                         likelyhood = "No fit: Other Irrelevant"
 
                 if likelyhood == "":
+                    if "Junior" in current_jobtitle and var[0] < 29 and "Java" not in prev_jobtitle:
+                        likelyhood = "No fit: Just recently started Java CHECK"
+
+                if likelyhood == "":
                     first_exp = 'class="background-entity__summary'
                     first_exp_end = '</dd>\n<!----><!----></dl></div>'
                     if first_exp in data:
@@ -383,23 +429,27 @@ try:
                     if current_description in first_exp:
                         current_description = first_exp.partition(current_description)[2]
                         current_description = current_description.partition(current_description_end)[0]
-                        if ".NET" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        if ".NET" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "C#" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "C#" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "Python" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "Python" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "Node.js" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "Node.js" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "node.js" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "node.js" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "React" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "React" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "JavaScript" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "JavaScript" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "Angular" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "Angular" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "Swift" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "Swift" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
+                            likelyhood = "No fit: Not using Java"
+                        elif "PHP" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
+                            likelyhood = "No fit: Not using Java"
+                        elif "C++" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
 
                 if likelyhood == "":
@@ -428,54 +478,104 @@ try:
                             likelyhood = "No fit: Changed job recently"
                     elif average_time < 18 and var[0] < 24:
                             likelyhood = 'No fit: Changes too often'
-                    if var[0] > 6 and var[0] < 24:
+                    if var[0] > 6 and var[0] < 30 and itsgroup == False:
                         for i in range(lenprodman):
                             if prodman[i] in prev_jobtitle:
-                                likelyhood = "No fit: Product CHECK"
+                                likelyhood = "No fit: Product till recently"
                                 
                         for i in range(lennetwork):
                             if network[i] in prev_jobtitle:
-                                likelyhood = "No fit: Network and Infrastructure CHECK"
+                                likelyhood = "No fit: Network and Infrastructure till recently"
                                 
                         for i in range(lendevops):
                             if devops[i] in prev_jobtitle:
-                                likelyhood = "No fit: DevOps CHECK"
+                                likelyhood = "No fit: DevOps till recently"
 
                         for i in range(lennetdev):
                             if netdev[i] in prev_jobtitle:
-                                likelyhood = "No fit: C#/.NET Developer CHECK"
+                                likelyhood = "No fit: C#/.NET Developer till recently"
 
                         for i in range(lentester):
                             if tester[i] in prev_jobtitle:
-                                likelyhood = "No fit: Tester CHECK"
+                                likelyhood = "No fit: Tester till recently"
 
                         for i in range(lendevops):
                             if devops[i] in prev_jobtitle:
-                                likelyhood = "No fit: DevOps CHECK"
+                                likelyhood = "No fit: DevOps till recently"
 
                         for i in range(lenphpdev):
                             if phpdev[i] in prev_jobtitle:
-                                likelyhood = "No fit: PHP Developer CHECK"
+                                likelyhood = "No fit: PHP Developer till recently"
 
                         for i in range(lenmobiledev):
                             if mobiledev[i] in prev_jobtitle:
-                                likelyhood = "No fit: Mobile Developer CHECK"
+                                likelyhood = "No fit: Mobile Developer till recently"
 
                         for i in range(lendataguy):
                             if dataguy[i] in prev_jobtitle:
-                                likelyhood = "No fit: Data Professional CHECK"
+                                likelyhood = "No fit: Data Professional till recently"
 
                         for i in range(lenbidev):
                             if bidev[i] in prev_jobtitle:
-                                likelyhood = "No fit: BI Developer CHECK"
+                                likelyhood = "No fit: BI Developer till recently"
 
                         for i in range(lenfrontenddev):
                             if frontenddev[i] in prev_jobtitle:
-                                likelyhood = "No fit: Frontend Developer CHECK"
+                                likelyhood = "No fit: Frontend Developer till recently"
 
                         for i in range(lenotherwrong):
                             if otherwrong[i] in prev_jobtitle:
-                                likelyhood = "No fit: Other Irrelevant CHECK"
+                                likelyhood = "No fit: Other Irrelevant till recently"
+                    elif itsgroup == True:
+                        var[0] = group_first_duration
+                        if var[0] > 6 and var[0] < 30:
+                            for i in range(lenprodman):
+                                if prodman[i] in prev_jobtitle:
+                                    likelyhood = "No fit: Product till recently"
+                                    
+                            for i in range(lennetwork):
+                                if network[i] in prev_jobtitle:
+                                    likelyhood = "No fit: Network and Infrastructure till recently"
+                                    
+                            for i in range(lendevops):
+                                if devops[i] in prev_jobtitle:
+                                    likelyhood = "No fit: DevOps till recently"
+
+                            for i in range(lennetdev):
+                                if netdev[i] in prev_jobtitle:
+                                    likelyhood = "No fit: C#/.NET Developer till recently"
+
+                            for i in range(lentester):
+                                if tester[i] in prev_jobtitle:
+                                    likelyhood = "No fit: Tester till recently"
+
+                            for i in range(lendevops):
+                                if devops[i] in prev_jobtitle:
+                                    likelyhood = "No fit: DevOps till recently"
+
+                            for i in range(lenphpdev):
+                                if phpdev[i] in prev_jobtitle:
+                                    likelyhood = "No fit: PHP Developer till recently"
+
+                            for i in range(lenmobiledev):
+                                if mobiledev[i] in prev_jobtitle:
+                                    likelyhood = "No fit: Mobile Developer till recently"
+
+                            for i in range(lendataguy):
+                                if dataguy[i] in prev_jobtitle:
+                                    likelyhood = "No fit: Data Professional till recently"
+
+                            for i in range(lenbidev):
+                                if bidev[i] in prev_jobtitle:
+                                    likelyhood = "No fit: BI Developer till recently"
+
+                            for i in range(lenfrontenddev):
+                                if frontenddev[i] in prev_jobtitle:
+                                    likelyhood = "No fit: Frontend Developer till recently"
+
+                            for i in range(lenotherwrong):
+                                if otherwrong[i] in prev_jobtitle:
+                                    likelyhood = "No fit: Other Irrelevant till recently"
                         
                 if likelyhood == "":
                     if netofoccurrences == 2:
@@ -556,15 +656,18 @@ try:
 
         t = time.localtime()
         current_time = time.strftime("%H:%M", t)
-        print(f"Total candidates saved: {total_saved} - {current_time}\n")
+        saved_percentage = (float(total_saved)*100)/(float(r+1)*float(n+1))
+        print(f"Total candidates saved: {total_saved} out of {(r+1)*(n+1)} ({int(saved_percentage)}%) - {current_time}\n")
 
     main()
-    ring_end(440, 1000)
+    #ring_end(440, 1000)
+    playsound("success-sound-effect.mp3")
+    playsound("success.mp3")
 
 except:
     t = time.localtime()
     current_time = time.strftime("%H:%M", t)
-    ring_end(700, 1000)
+    ring_end()
     print(f"\nProgram interrupted at {current_time}")
 
 
