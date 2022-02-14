@@ -241,7 +241,7 @@ try:
                     durationtest1 = current_jobtitle.partition(duration_group_start)[2]
                     durationtest = durationtest1.partition(duration_group_end)[0]
                     if re.findall(".+ yrs .+ mos", durationtest):
-                        group_first_duration = int(durationtest[:2]) * 12 + int(durationtest[i][6:-4])
+                        group_first_duration = int(durationtest[:2]) * 12 + int(durationtest[6:-4])
                     elif re.findall(".+ yrs .+ mo", durationtest):
                         group_first_duration = int(durationtest[:2]) * 12 + int(durationtest[6:-3])
                     elif re.findall(".+ yr .+ mos", durationtest):
