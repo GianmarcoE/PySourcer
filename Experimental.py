@@ -58,7 +58,7 @@ try:
         
     def main():
         total_saved = 0
-        for r in range(4):
+        for r in range(1):
             
             time.sleep(1)
             pyautogui.click(690, 623) #click first profile list
@@ -212,9 +212,8 @@ try:
 
                 current_jobtitle_start0 = 'class="ember-view position-item__position-title-link">'
                 current_jobtitle_start = 'class="position-item__position-title-link ember-view">'
-                current_jobtitle_end = '</a>'
                 current_jobtitle_start2 = 'class="ember-view" data-test-grouped-position-title-link="">'
-                current_jobtitle_end2 = '</a>'
+                current_jobtitle_end = '</a>'
                 zero = data.find(current_jobtitle_start0)
                 first = data.find(current_jobtitle_start)
                 second = data.find(current_jobtitle_start2)
@@ -235,7 +234,7 @@ try:
                 elif second == -1:
                     second += first + 2
 
-                if first < second: #checks index of the two strings to see which one comes first and uses it as current job title
+                if first < second and zero == -1: #checks index of the two strings to see which one comes first and uses it as current job title
                     current_jobtitle = data.partition(current_jobtitle_start)[2]
                     #check location
                     current_location_start = 'class="background-entity__summary-definition--location" data-test-position-entity-location="">'
@@ -246,9 +245,8 @@ try:
                     current_jobtitle = current_jobtitle.partition(current_jobtitle_end)[0]
                     current_jobtitle = current_jobtitle.strip()
                     itsgroup = False
-                elif second < first:
-                    current_jobtitle_start = current_jobtitle_start2    
-                    current_jobtitle_end = current_jobtitle_end2
+                elif second < first and zero == -1:
+                    current_jobtitle_start = current_jobtitle_start2
                     current_jobtitle = data.partition(current_jobtitle_start)[2]
 
                     ### Inizio test nuovo
@@ -285,9 +283,8 @@ try:
                 if itsgroup == False:
                     for jbt in range(2):
                         prev_jobtitle_start = 'class="position-item__position-title-link ember-view">'
-                        prev_jobtitle_end = '</a>'
                         prev_jobtitle_start2 = 'class="ember-view" data-test-grouped-position-title-link="">'
-                        prev_jobtitle_end2 = '</a>'
+                        prev_jobtitle_end = '</a>'
                         if jbt == 0:
                             first = data.find(prev_jobtitle_start)
                             second = data.find(prev_jobtitle_start2)
@@ -303,7 +300,6 @@ try:
                                     pass
                                 else:
                                     prev_jobtitle_start = prev_jobtitle_start2
-                                    prev_jobtitle_end = prev_jobtitle_end2
                         if jbt == 0:
                             prev_jobtitle = data.partition(prev_jobtitle_start)[2]
                         elif jbt == 1:
