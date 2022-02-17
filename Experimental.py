@@ -162,7 +162,7 @@ try:
                           "Test Developer", "Automation Quality", "tester",
                           "Tester", "Automation Engineer", "Test Development",
                           "Test Analyst", "Test Lead", "Tests", "Test Consultant",
-                          "Test automation", "Test Framework"]
+                          "Test automation", "Test Framework", "Testing Consultant"]
                 lentester = len(tester)
 
                 netdev = [".NET", ".Net", "C#"]
@@ -207,25 +207,46 @@ try:
 
                 otherwrong = ["Recruit", "Support", "Salesforce", "Security", "security",
                               "SAP Commerce", "SAP Developer", "Managing Partner",
-                              "AEM", "Resourcer"]
+                              "AEM", "Resourcer", "Bootcamp", "bootcamp"]
                 lenotherwrong = len(otherwrong)
 
+                current_jobtitle_start0 = 'class="ember-view position-item__position-title-link">'
                 current_jobtitle_start = 'class="position-item__position-title-link ember-view">'
                 current_jobtitle_end = '</a>'
                 current_jobtitle_start2 = 'class="ember-view" data-test-grouped-position-title-link="">'
                 current_jobtitle_end2 = '</a>'
+                zero = data.find(current_jobtitle_start0)
                 first = data.find(current_jobtitle_start)
                 second = data.find(current_jobtitle_start2)
-                if first == -1:
-                    first += second + 2
-                elif second == -1:
-                    second += first + 2
-                if first < second: #checks index of the two strings to see which one comes first and uses it as current job title
-                    current_jobtitle = data.partition(current_jobtitle_start)[2]
+
+                if zero != -1:
+                    current_jobtitle = data.partition(current_jobtitle_start0)[2]
+                    #check location
+                    current_location_start = 'class="background-entity__summary-definition--location" data-test-position-entity-location="">'
+                    current_location_end = '</dd>'
+                    current_location = current_jobtitle.partition(current_location_start)[2]
+                    current_location = current_location.partition(current_location_end)[0]
+                    current_location = current_location.strip()
                     current_jobtitle = current_jobtitle.partition(current_jobtitle_end)[0]
                     current_jobtitle = current_jobtitle.strip()
                     itsgroup = False
-                else:
+                elif first == -1:
+                    first += second + 2
+                elif second == -1:
+                    second += first + 2
+
+                if first < second: #checks index of the two strings to see which one comes first and uses it as current job title
+                    current_jobtitle = data.partition(current_jobtitle_start)[2]
+                    #check location
+                    current_location_start = 'class="background-entity__summary-definition--location" data-test-position-entity-location="">'
+                    current_location_end = '</dd>'
+                    current_location = current_jobtitle.partition(current_location_start)[2]
+                    current_location = current_location.partition(current_location_end)[0]
+                    current_location = current_location.strip()
+                    current_jobtitle = current_jobtitle.partition(current_jobtitle_end)[0]
+                    current_jobtitle = current_jobtitle.strip()
+                    itsgroup = False
+                elif second < first:
                     current_jobtitle_start = current_jobtitle_start2    
                     current_jobtitle_end = current_jobtitle_end2
                     current_jobtitle = data.partition(current_jobtitle_start)[2]
@@ -414,9 +435,13 @@ try:
                     if otherwrong[i] in current_jobtitle:
                         likelyhood = "No fit: Other Irrelevant"
 
+                if likelyhood == "" and itsgroup == False:
+                    if "Minsk" in current_location or "Belarus" in current_location or "India" in current_location:
+                        likelyhood = "No fit: Based outside PL CHECK"
+
                 if likelyhood == "":
                     if "Junior" in current_jobtitle and var[0] < 29 and "Java" not in prev_jobtitle:
-                        likelyhood = "No fit: Just recently started Java CHECK"
+                        likelyhood = "No fit: Just recently started Java"
 
                 if likelyhood == "":
                     first_exp = 'class="background-entity__summary'
