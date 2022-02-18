@@ -58,7 +58,7 @@ try:
         
     def main():
         total_saved = 0
-        for r in range(1):
+        for r in range(4):
             
             time.sleep(1)
             pyautogui.click(690, 623) #click first profile list
@@ -214,12 +214,18 @@ try:
                 current_jobtitle_start = 'class="position-item__position-title-link ember-view">'
                 current_jobtitle_start2 = 'class="ember-view" data-test-grouped-position-title-link="">'
                 current_jobtitle_end = '</a>'
+                prev_jobtitle_start = 'class="ember-view position-item__position-title-link">'
+                prev_jobtitle_end = '</a>'
                 zero = data.find(current_jobtitle_start0)
                 first = data.find(current_jobtitle_start)
                 second = data.find(current_jobtitle_start2)
 
-                if zero != -1:
+                if zero != -1 and zero < first and zero < second:
                     current_jobtitle = data.partition(current_jobtitle_start0)[2]
+
+                    prev_jobtitle = current_jobtitle.partition(prev_jobtitle_start)[2]
+                    prev_jobtitle = prev_jobtitle.partition(prev_jobtitle_end)[0]
+                    prev_jobtitle = prev_jobtitle.strip()
                     #check location
                     current_location_start = 'class="background-entity__summary-definition--location" data-test-position-entity-location="">'
                     current_location_end = '</dd>'
@@ -230,12 +236,18 @@ try:
                     current_jobtitle = current_jobtitle.strip()
                     itsgroup = False
                 elif first == -1:
+                    zero = -1
                     first += second + 2
                 elif second == -1:
+                    zero = -1
                     second += first + 2
 
                 if first < second and zero == -1: #checks index of the two strings to see which one comes first and uses it as current job title
                     current_jobtitle = data.partition(current_jobtitle_start)[2]
+
+                    prev_jobtitle = current_jobtitle.partition(prev_jobtitle_start)[2]
+                    prev_jobtitle = prev_jobtitle.partition(prev_jobtitle_end)[0]
+                    prev_jobtitle = prev_jobtitle.strip()
                     #check location
                     current_location_start = 'class="background-entity__summary-definition--location" data-test-position-entity-location="">'
                     current_location_end = '</dd>'
@@ -246,7 +258,7 @@ try:
                     current_jobtitle = current_jobtitle.strip()
                     itsgroup = False
                 elif second < first and zero == -1:
-                    current_jobtitle_start = current_jobtitle_start2
+                    current_jobtitle_start = current_jobtitle_start2    
                     current_jobtitle = data.partition(current_jobtitle_start)[2]
 
                     ### Inizio test nuovo
@@ -280,33 +292,33 @@ try:
                     current_jobtitle = current_jobtitle.partition(current_jobtitle_end)[0]
                     current_jobtitle = current_jobtitle.strip()
 
-                if itsgroup == False:
-                    for jbt in range(2):
-                        prev_jobtitle_start = 'class="position-item__position-title-link ember-view">'
-                        prev_jobtitle_start2 = 'class="ember-view" data-test-grouped-position-title-link="">'
-                        prev_jobtitle_end = '</a>'
-                        if jbt == 0:
-                            first = data.find(prev_jobtitle_start)
-                            second = data.find(prev_jobtitle_start2)
-                        elif jbt == 1:
-                            if prev_jobtitle_start in prev_jobtitle or prev_jobtitle_start2 in prev_jobtitle:
-                                first = prev_jobtitle.find(prev_jobtitle_start)
-                                second = prev_jobtitle.find(prev_jobtitle_start2)
-                                if first == -1:
-                                    first += second + 2
-                                elif second == -1:
-                                    second += first + 2
-                                if first < second: #checks index of the two strings to see which one comes first and uses it as current job title
-                                    pass
-                                else:
-                                    prev_jobtitle_start = prev_jobtitle_start2
-                        if jbt == 0:
-                            prev_jobtitle = data.partition(prev_jobtitle_start)[2]
-                        elif jbt == 1:
-                            prev_jobtitle = prev_jobtitle.partition(prev_jobtitle_start)[2] #strips twice to get the job title prior to current
-                            
-                    prev_jobtitle = prev_jobtitle.partition(prev_jobtitle_end)[0]
-                    prev_jobtitle = prev_jobtitle.strip()
+##                if itsgroup == False:
+##                    for jbt in range(2):
+##                        prev_jobtitle_start = 'class="position-item__position-title-link ember-view">'
+##                        prev_jobtitle_start2 = 'class="ember-view" data-test-grouped-position-title-link="">'
+##                        prev_jobtitle_end = '</a>'
+##                        if jbt == 0:
+##                            first = data.find(prev_jobtitle_start)
+##                            second = data.find(prev_jobtitle_start2)
+##                        elif jbt == 1:
+##                            if prev_jobtitle_start in prev_jobtitle or prev_jobtitle_start2 in prev_jobtitle:
+##                                first = prev_jobtitle.find(prev_jobtitle_start)
+##                                second = prev_jobtitle.find(prev_jobtitle_start2)
+##                                if first == -1:
+##                                    first += second + 2
+##                                elif second == -1:
+##                                    second += first + 2
+##                                if first < second: #checks index of the two strings to see which one comes first and uses it as current job title
+##                                    pass
+##                                else:
+##                                    prev_jobtitle_start = prev_jobtitle_start2
+##                        if jbt == 0:
+##                            prev_jobtitle = data.partition(prev_jobtitle_start)[2]
+##                        elif jbt == 1:
+##                            prev_jobtitle = prev_jobtitle.partition(prev_jobtitle_start)[2] #strips twice to get the job title prior to current
+##                            
+##                    prev_jobtitle = prev_jobtitle.partition(prev_jobtitle_end)[0]
+##                    prev_jobtitle = prev_jobtitle.strip()
 
                 var = []
 
@@ -555,8 +567,9 @@ try:
                         for i in range(lenotherwrong):
                             if otherwrong[i] in prev_jobtitle:
                                 likelyhood = "No fit: Other Irrelevant till recently"
+
                     elif itsgroup == True:
-                        if group_first_duration > 6 and group_first_duration < 30:
+                        if group_first_duration < 30:
                             for i in range(lenprodman):
                                 if prodman[i] in prev_jobtitle:
                                     likelyhood = "No fit: Product till recently"
