@@ -6,7 +6,8 @@ from tkinter import Tk
 #import winsound
 import webbrowser
 import re
-from playsound import playsound  
+from playsound import playsound
+from datetime import datetime
 
 try:
 
@@ -18,6 +19,31 @@ try:
         pyautogui.click(670, 651)
         pyautogui.click(670, 591)
         time.sleep(4) #3 e la base
+
+    def autosave():
+        pyautogui.click(1259, 857) #go on the body of the LI profile
+        pyautogui.scroll(6000)
+        time.sleep(0.2)
+        pyautogui.click(970, 595)
+        time.sleep(0.3)
+        pyautogui.press('down', presses=5, interval=0.3)
+        time.sleep(0.5)
+        pyautogui.press('enter')
+        time.sleep(0.3)
+        pyautogui.click(1402, 470)
+        time.sleep(1.5)
+        pyautogui.write("autosave", interval=0.2)
+        time.sleep(1.5)
+        pyautogui.click(1565, 644)
+##        pyautogui.press('down', presses=2, interval=0.3)
+##        time.sleep(0.3)
+##        pyautogui.press('enter')
+        time.sleep(1.5)
+        pyautogui.scroll(-6000)
+        time.sleep(1)
+        pyautogui.click(1709, 911)
+        time.sleep(4)
+        
 
     def copy_link():
         pyautogui.click(1259, 857) #go on the body of the LI profile
@@ -57,14 +83,31 @@ try:
 ##        winsound.Beep(freq, 2*duration)
         
     def main():
+
+        now = datetime.now()
+        current_time = now.strftime("%H:%M")
+        hour = 8
+        minute = 17
+        target = f"0{hour}:{minute}"
+
+        while True:
+            now = datetime.now()
+            current_time = now.strftime("%H:%M")
+            if current_time == target or current_time == f"0{hour}:{minute + 1}":
+                break
+            else:
+                time.sleep(59)
+            
         total_saved = 0
-        for r in range(4):
+        savedprofiles = 0
+        checkprofiles = 0
+        for r in range(2):
             
             time.sleep(1)
             pyautogui.click(690, 623) #click first profile list
             time.sleep(4)
 
-            savedprofiles = 0
+            page_saved = 0
                 
             for n in range(25):
 
@@ -72,7 +115,7 @@ try:
                     pass
                 else:
                     pyautogui.click(1798, 202) #next profile
-                    time.sleep(5) #4 e la base
+                    time.sleep(6) #4 e la base
                     
                 pyautogui.rightClick(1200, 515) #right click on profile #1220 before
                 time.sleep(0.5)
@@ -162,7 +205,8 @@ try:
                           "Test Developer", "Automation Quality", "tester",
                           "Tester", "Automation Engineer", "Test Development",
                           "Test Analyst", "Test Lead", "Tests", "Test Consultant",
-                          "Test automation", "Test Framework", "Testing Consultant"]
+                          "Test automation", "Test Framework", "Testing Consultant",
+                          "testów", "Testów"]
                 lentester = len(tester)
 
                 netdev = [".NET", ".Net", "C#"]
@@ -175,7 +219,8 @@ try:
                            "Integration", "Administrator aplikacji",
                            "Inżynier Systemowy", "inżynier systemowy",
                            "Systems engineer", "Administrator systemu",
-                           "Systems administrator", "Administrator IT"]
+                           "Systems administrator", "Administrator IT",
+                           "Administrator systemów"]
                 lennetwork = len(network)
 
                 devops = ["DevOps", "devops", "Devops", "Site Reliability Engineer",
@@ -185,7 +230,7 @@ try:
                 prodman = ["Product Manager", "Product Management", "Product Engineer"]
                 lenprodman = len(prodman)
 
-                mobiledev = ["Mobile", "Android", "IOS", "iOS", "Xamarin"]
+                mobiledev = ["Mobile", "Android", "IOS", "iOS", "Xamarin", "Flutter"]
                 lenmobiledev = len(mobiledev)
 
                 phpdev = ["PHP Developer", "PHP developer"]
@@ -210,39 +255,20 @@ try:
                               "AEM", "Resourcer", "Bootcamp", "bootcamp"]
                 lenotherwrong = len(otherwrong)
 
-                current_jobtitle_start0 = 'class="ember-view position-item__position-title-link">'
-                current_jobtitle_start = 'class="position-item__position-title-link ember-view">'
+                current_jobtitle_start = 'class="ember-view position-item__position-title-link">'
                 current_jobtitle_start2 = 'class="ember-view" data-test-grouped-position-title-link="">'
                 current_jobtitle_end = '</a>'
                 prev_jobtitle_start = 'class="ember-view position-item__position-title-link">'
                 prev_jobtitle_end = '</a>'
-                zero = data.find(current_jobtitle_start0)
                 first = data.find(current_jobtitle_start)
                 second = data.find(current_jobtitle_start2)
 
-                if zero != -1 and zero < first and zero < second:
-                    current_jobtitle = data.partition(current_jobtitle_start0)[2]
-
-                    prev_jobtitle = current_jobtitle.partition(prev_jobtitle_start)[2]
-                    prev_jobtitle = prev_jobtitle.partition(prev_jobtitle_end)[0]
-                    prev_jobtitle = prev_jobtitle.strip()
-                    #check location
-                    current_location_start = 'class="background-entity__summary-definition--location" data-test-position-entity-location="">'
-                    current_location_end = '</dd>'
-                    current_location = current_jobtitle.partition(current_location_start)[2]
-                    current_location = current_location.partition(current_location_end)[0]
-                    current_location = current_location.strip()
-                    current_jobtitle = current_jobtitle.partition(current_jobtitle_end)[0]
-                    current_jobtitle = current_jobtitle.strip()
-                    itsgroup = False
-                elif first == -1:
-                    zero = -1
+                if first == -1:
                     first += second + 2
                 elif second == -1:
-                    zero = -1
                     second += first + 2
 
-                if first < second and zero == -1: #checks index of the two strings to see which one comes first and uses it as current job title
+                if first < second: #checks index of the two strings to see which one comes first and uses it as current job title
                     current_jobtitle = data.partition(current_jobtitle_start)[2]
 
                     prev_jobtitle = current_jobtitle.partition(prev_jobtitle_start)[2]
@@ -257,7 +283,7 @@ try:
                     current_jobtitle = current_jobtitle.partition(current_jobtitle_end)[0]
                     current_jobtitle = current_jobtitle.strip()
                     itsgroup = False
-                elif second < first and zero == -1:
+                elif second < first:
                     current_jobtitle_start = current_jobtitle_start2    
                     current_jobtitle = data.partition(current_jobtitle_start)[2]
 
@@ -356,36 +382,42 @@ try:
                         duration2 = duration1.partition(duration_end)[0]
                         var.append(duration2)
 
-                lenvar = len(var)
+                again = True
+                while again == True:
+                    lenvar = len(var)
 
-                for i in range(lenvar):
-                    if var[i] != '':
-                        if re.findall(".+ yrs .+ mos", var[i]):
-                            current_duration = int(var[i][:2]) * 12 + int(var[i][6:-4])
-                            var[i] = current_duration
-                        elif re.findall(".+ yrs .+ mo", var[i]):
-                            current_duration = int(var[i][:2]) * 12 + int(var[i][6:-3])
-                            var[i] = current_duration
-                        elif re.findall(".+ yr .+ mos", var[i]):
-                            current_duration = int(var[i][:2]) * 12 + int(var[i][5:-4])
-                            var[i] = current_duration
-                        elif re.findall(".+ yr .+ mo", var[i]):
-                            current_duration = int(var[i][:2]) * 12 + int(var[i][5:-3])
-                            var[i] = current_duration
-                        elif re.findall(".+ yrs", var[i]):
-                            current_duration = int(var[i][:-4]) * 12
-                            var[i] = current_duration
-                        elif re.findall(".+ yr", var[i]):
-                            current_duration = int(var[i][:2]) * 12
-                            var[i] = current_duration
-                        elif re.findall(".+ mos", var[i]):
-                            current_duration = int(var[i][:-4])
-                            var[i] = current_duration
-                        elif re.findall(".+ mo", var[i]):
-                            current_duration = int(var[i][:-3])
-                            var[i] = current_duration
-                    else:
-                        var.remove(var[i])
+                    for i in range(lenvar):
+                        if var[i] != '':
+                            if re.findall(".+ yrs .+ mos", var[i]):
+                                current_duration = int(var[i][:2]) * 12 + int(var[i][6:-4])
+                                var[i] = current_duration
+                            elif re.findall(".+ yrs .+ mo", var[i]):
+                                current_duration = int(var[i][:2]) * 12 + int(var[i][6:-3])
+                                var[i] = current_duration
+                            elif re.findall(".+ yr .+ mos", var[i]):
+                                current_duration = int(var[i][:2]) * 12 + int(var[i][5:-4])
+                                var[i] = current_duration
+                            elif re.findall(".+ yr .+ mo", var[i]):
+                                current_duration = int(var[i][:2]) * 12 + int(var[i][5:-3])
+                                var[i] = current_duration
+                            elif re.findall(".+ yrs", var[i]):
+                                current_duration = int(var[i][:-4]) * 12
+                                var[i] = current_duration
+                            elif re.findall(".+ yr", var[i]):
+                                current_duration = int(var[i][:2]) * 12
+                                var[i] = current_duration
+                            elif re.findall(".+ mos", var[i]):
+                                current_duration = int(var[i][:-4])
+                                var[i] = current_duration
+                            elif re.findall(".+ mo", var[i]):
+                                current_duration = int(var[i][:-3])
+                                var[i] = current_duration
+                            else:
+                                pass
+                            again = False
+                        else:
+                            var.remove(var[i])
+                            again = True
 
                 lenvar = len(var)
                 average_time = sum(var)/lenvar
@@ -680,25 +712,32 @@ try:
                 pyautogui.click(1900, 178) # close Inspector
                 time.sleep(1.5)
 
-                if "good fit" in likelyhood:
+                if "good fit" in likelyhood and "*" not in likelyhood:
                     save_profile()
+                    checkprofiles += 1
+                    page_saved += 1
+                    total_saved += 1
+                elif "*" in likelyhood:
+                    autosave()
                     savedprofiles += 1
+                    page_saved += 1
                     total_saved += 1
                 elif likelyhood == "Too Senior" or "No fit:" in likelyhood:
                     pass
                 else:
                     copy_link()
 
-            print(f"\nPage {r + 1} - Candidates saved: {savedprofiles}\n")
+            print(f"\nPage {r + 1} - Candidates saved: {page_saved}\n")
             pyautogui.click(1884, 202) #click x to close profiles
             time.sleep(1.5)
             pyautogui.click(126, 77) #click refresh
-            time.sleep(14)
+            time.sleep(14) #THIS TO BE RESTORED TO GO >25
 
         t = time.localtime()
         current_time = time.strftime("%H:%M", t)
         saved_percentage = (float(total_saved)*100)/(float(r+1)*float(n+1))
-        print(f"Total candidates saved: {total_saved} out of {(r+1)*(n+1)} ({int(saved_percentage)}%) - {current_time}\n")
+        print(f"Total candidates saved: {total_saved} out of {(r+1)*(n+1)} ({int(saved_percentage)}%) - {current_time}")
+        print(f"{checkprofiles} to be checked, {savedprofiles} to be contacted\n")
 
     main()
     #ring_end(440, 1000)
