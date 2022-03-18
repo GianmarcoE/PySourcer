@@ -74,6 +74,7 @@ try:
 ##        language = 'en'  
 ##        obj = gTTS(text=text_val, lang=language, slow=False)    
 ##        obj.save("interrupt.mp3")
+        os.chdir("C:\\Users\\ercolani\\OneDrive - TomTom\\Desktop\\Python BS")
         playsound("sound-of-a-game-failed-trumpet.mp3")
         playsound("interrupt.mp3")
 ##        winsound.Beep(freq, duration)
@@ -84,19 +85,22 @@ try:
         
     def main():
 
-        now = datetime.now()
-        current_time = now.strftime("%H:%M")
-        hour = 8
-        minute = 17
-        target = f"0{hour}:{minute}"
-
-        while True:
-            now = datetime.now()
-            current_time = now.strftime("%H:%M")
-            if current_time == target or current_time == f"0{hour}:{minute + 1}":
-                break
-            else:
-                time.sleep(59)
+##        now = datetime.now()
+##        current_time = now.strftime("%H:%M")
+##        hour = 8
+##        minute = 0
+##        target = f"0{hour}:0{minute}"
+##
+##        while True:
+##            now = datetime.now()
+##            current_time = now.strftime("%H:%M")
+##            if current_time == target or current_time == f"0{hour}:0{minute + 1}":
+##                break
+##            else:
+##                pyautogui.moveTo(690, 623)
+##                time.sleep(1)
+##                pyautogui.moveTo(320, 623)
+##                time.sleep(59)
             
         total_saved = 0
         savedprofiles = 0
@@ -147,6 +151,9 @@ try:
 
                 #file = open("C:\\Users\\ercolani\\OneDrive - TomTom\\Desktop\\Xample.txt", "r", encoding="utf8") #get file
                 #data = file.read() #read content of file to string
+
+                if '{"seat":"urn:li:ts' in data:
+                    raise Exception("Got stuck!")
 
                 spl_word_header = 'class="topcard-requisitions topcard-condensed'
                 header = data.partition(spl_word_header)[0]
@@ -206,7 +213,7 @@ try:
                           "Tester", "Automation Engineer", "Test Development",
                           "Test Analyst", "Test Lead", "Tests", "Test Consultant",
                           "Test automation", "Test Framework", "Testing Consultant",
-                          "testów", "Testów"]
+                          "testów", "Testów", "Quality Specialist"]
                 lentester = len(tester)
 
                 netdev = [".NET", ".Net", "C#"]
@@ -247,7 +254,7 @@ try:
 
                 frontenddev = ["Frontend Developer", "Frontend developer", "Front-end Developer",
                                "Front-End Developer", "Front-end developer", "Frontend React Developer",
-                               "Frontend Engineer"]
+                               "Frontend Engineer", "Frontend Web Developer", "Frontend Software Engineer"]
                 lenfrontenddev = len(frontenddev)
 
                 otherwrong = ["Recruit", "Support", "Salesforce", "Security", "security",
@@ -387,37 +394,41 @@ try:
                     lenvar = len(var)
 
                     for i in range(lenvar):
-                        if var[i] != '':
-                            if re.findall(".+ yrs .+ mos", var[i]):
-                                current_duration = int(var[i][:2]) * 12 + int(var[i][6:-4])
-                                var[i] = current_duration
-                            elif re.findall(".+ yrs .+ mo", var[i]):
-                                current_duration = int(var[i][:2]) * 12 + int(var[i][6:-3])
-                                var[i] = current_duration
-                            elif re.findall(".+ yr .+ mos", var[i]):
-                                current_duration = int(var[i][:2]) * 12 + int(var[i][5:-4])
-                                var[i] = current_duration
-                            elif re.findall(".+ yr .+ mo", var[i]):
-                                current_duration = int(var[i][:2]) * 12 + int(var[i][5:-3])
-                                var[i] = current_duration
-                            elif re.findall(".+ yrs", var[i]):
-                                current_duration = int(var[i][:-4]) * 12
-                                var[i] = current_duration
-                            elif re.findall(".+ yr", var[i]):
-                                current_duration = int(var[i][:2]) * 12
-                                var[i] = current_duration
-                            elif re.findall(".+ mos", var[i]):
-                                current_duration = int(var[i][:-4])
-                                var[i] = current_duration
-                            elif re.findall(".+ mo", var[i]):
-                                current_duration = int(var[i][:-3])
-                                var[i] = current_duration
-                            else:
-                                pass
-                            again = False
-                        else:
+                        if var[i] == '':
                             var.remove(var[i])
                             again = True
+                            break
+                        else:
+                            again = False
+
+                for i in range(lenvar):
+                    if var[i] != '':
+                        if re.findall(".+ yrs .+ mos", var[i]):
+                            current_duration = int(var[i][:2]) * 12 + int(var[i][6:-4])
+                            var[i] = current_duration
+                        elif re.findall(".+ yrs .+ mo", var[i]):
+                            current_duration = int(var[i][:2]) * 12 + int(var[i][6:-3])
+                            var[i] = current_duration
+                        elif re.findall(".+ yr .+ mos", var[i]):
+                            current_duration = int(var[i][:2]) * 12 + int(var[i][5:-4])
+                            var[i] = current_duration
+                        elif re.findall(".+ yr .+ mo", var[i]):
+                            current_duration = int(var[i][:2]) * 12 + int(var[i][5:-3])
+                            var[i] = current_duration
+                        elif re.findall(".+ yrs", var[i]):
+                            current_duration = int(var[i][:-4]) * 12
+                            var[i] = current_duration
+                        elif re.findall(".+ yr", var[i]):
+                            current_duration = int(var[i][:2]) * 12
+                            var[i] = current_duration
+                        elif re.findall(".+ mos", var[i]):
+                            current_duration = int(var[i][:-4])
+                            var[i] = current_duration
+                        elif re.findall(".+ mo", var[i]):
+                            current_duration = int(var[i][:-3])
+                            var[i] = current_duration
+                        else:
+                            pass
 
                 lenvar = len(var)
                 average_time = sum(var)/lenvar
@@ -476,7 +487,7 @@ try:
                         likelyhood = "No fit: Other Irrelevant"
 
                 if likelyhood == "" and itsgroup == False:
-                    if "Minsk" in current_location or "Belarus" in current_location or "India" in current_location:
+                    if "Беларусь" in current_location or "Belarus" in current_location or "India" in current_location:
                         likelyhood = "No fit: Based outside PL CHECK"
 
                 if likelyhood == "":
@@ -494,27 +505,27 @@ try:
                     if current_description in first_exp:
                         current_description = first_exp.partition(current_description)[2]
                         current_description = current_description.partition(current_description_end)[0]
-                        if ".NET" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        if ".NET" in current_description and "Java</em> " not in current_description and "Java</em>." not in current_description and "Java</em>)" not in current_description and "Java</em>," not in current_description and "Java</em>/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "C#" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "C#" in current_description and "Java</em> " not in current_description and "Java</em>." not in current_description and "Java</em>)" not in current_description and "Java</em>," not in current_description and "Java</em>/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "Python" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "Python" in current_description and "Java</em> " not in current_description and "Java</em>." not in current_description and "Java</em>)" not in current_description and "Java</em>," not in current_description and "Java</em>/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "Node.js" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "Node.js" in current_description and "Java</em> " not in current_description and "Java</em>." not in current_description and "Java</em>)" not in current_description and "Java</em>," not in current_description and "Java</em>/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "node.js" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "node.js" in current_description and "Java</em> " not in current_description and "Java</em>." not in current_description and "Java</em>)" not in current_description and "Java</em>," not in current_description and "Java</em>/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "React" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "React" in current_description and "Java</em> " not in current_description and "Java</em>." not in current_description and "Java</em>)" not in current_description and "Java</em>," not in current_description and "Java</em>/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "JavaScript" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "Java</em>Script" in current_description and "Java</em> " not in current_description and "Java</em>." not in current_description and "Java</em>)" not in current_description and "Java</em>," not in current_description and "Java</em>/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "Angular" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "Angular" in current_description and "Java</em> " not in current_description and "Java</em>." not in current_description and "Java</em>)" not in current_description and "Java</em>," not in current_description and "Java</em>/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "Swift" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "Swift" in current_description and "Java</em> " not in current_description and "Java</em>." not in current_description and "Java</em>)" not in current_description and "Java</em>," not in current_description and "Java</em>/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "PHP" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "PHP" in current_description and "Java</em> " not in current_description and "Java</em>." not in current_description and "Java</em>)" not in current_description and "Java</em>," not in current_description and "Java</em>/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
-                        elif "C++" in current_description and "Java " not in current_description and "Java." not in current_description and "Java)" not in current_description and "Java," not in current_description and "Java/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
+                        elif "C++" in current_description and "Java</em> " not in current_description and "Java</em>." not in current_description and "Java</em>)" not in current_description and "Java</em>," not in current_description and "Java</em>/" not in current_description and "JAVA" not in current_description and "Spring" not in current_description and var[0] > 18:
                             likelyhood = "No fit: Not using Java"
 
                 if likelyhood == "":
@@ -652,22 +663,22 @@ try:
                         
                 if likelyhood == "":
                     if netofoccurrences == 2:
-                        if "Java" in current_jobtitle and "JavaScript" not in current_jobtitle and "Javascript" not in current_jobtitle:
+                        if "Java" in current_jobtitle and "Java</em>Script" not in current_jobtitle and "Java</em>script" not in current_jobtitle:
                             likelyhood = "85% good fit *"
                         else:
                             likelyhood = "50% good fit"
                     elif netofoccurrences >= 3 and netofoccurrences < 7:
-                        if "Java" in current_jobtitle and "JavaScript" not in current_jobtitle and "Javascript" not in current_jobtitle:
+                        if "Java" in current_jobtitle and "Java</em>Script" not in current_jobtitle and "Java</em>script" not in current_jobtitle:
                             likelyhood = "90% good fit *"
                         else:
                             likelyhood = "65% good fit"
                     elif netofoccurrences > 6:
-                        if "Java" in current_jobtitle and "JavaScript" not in current_jobtitle and "Javascript" not in current_jobtitle:
+                        if "Java" in current_jobtitle and "Java</em>Script" not in current_jobtitle and "Java</em>script" not in current_jobtitle:
                             likelyhood = "95% good fit *"
                         else:
                             likelyhood = "80% good fit"
                     elif netofoccurrences == 1:
-                        if "Java" in current_jobtitle and "JavaScript" not in current_jobtitle and "Javascript" not in current_jobtitle:
+                        if "Java" in current_jobtitle and "Java</em>Script" not in current_jobtitle and "Java</em>script" not in current_jobtitle:
                             likelyhood = "70% good fit *"
                         else:
                             if java_skill_count in data:
@@ -741,11 +752,15 @@ try:
 
     main()
     #ring_end(440, 1000)
+    os.chdir("C:\\Users\\ercolani\\OneDrive - TomTom\\Desktop\\Python BS")
     playsound("success-sound-effect.mp3")
     playsound("success.mp3")
+    time.sleep(60)
 
 except:
     t = time.localtime()
     current_time = time.strftime("%H:%M", t)
     ring_end()
     print(f"\nProgram interrupted at {current_time}")
+    time.sleep(60)
+
