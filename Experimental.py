@@ -74,7 +74,7 @@ try:
 ##        language = 'en'  
 ##        obj = gTTS(text=text_val, lang=language, slow=False)    
 ##        obj.save("interrupt.mp3")
-        os.chdir("C:\\Users\\ercolani\\OneDrive - TomTom\\Desktop\\Python BS")
+        os.chdir("C:\\Users\\ercolani\\Desktop\\Python BS")
         playsound("sound-of-a-game-failed-trumpet.mp3")
         playsound("interrupt.mp3")
 ##        winsound.Beep(freq, duration)
@@ -105,9 +105,9 @@ try:
         total_saved = 0
         savedprofiles = 0
         checkprofiles = 0
-        for r in range(2):
+        for r in range(4):
             
-            time.sleep(1)
+            time.sleep(3)
             pyautogui.click(690, 623) #click first profile list
             time.sleep(4)
 
@@ -487,7 +487,7 @@ try:
                         likelyhood = "No fit: Other Irrelevant"
 
                 if likelyhood == "" and itsgroup == False:
-                    if "Беларусь" in current_location or "Belarus" in current_location or "India" in current_location:
+                    if "Minsk" in current_location or "Беларусь" in current_location or "Belarus" in current_location or "India" in current_location or "Ukraine" in current_location:
                         likelyhood = "No fit: Based outside PL CHECK"
 
                 if likelyhood == "":
@@ -707,7 +707,7 @@ try:
                     if too_senior == True:
                         likelyhood = "Too Senior"
 
-                employee = data.count("TomTom")
+                employee = data.count("Company")
 
                 if employee != 0:
                     likelyhood += " CAREFUL - CURRENT/FORMER EMPLOYEE"
@@ -752,7 +752,7 @@ try:
 
     main()
     #ring_end(440, 1000)
-    os.chdir("C:\\Users\\ercolani\\OneDrive - TomTom\\Desktop\\Python BS")
+    os.chdir("C:\\Users\\ercolani\\Desktop\\Python BS")
     playsound("success-sound-effect.mp3")
     playsound("success.mp3")
     time.sleep(60)
@@ -763,4 +763,3 @@ except:
     ring_end()
     print(f"\nProgram interrupted at {current_time}")
     time.sleep(60)
-
